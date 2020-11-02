@@ -21,7 +21,7 @@ class QuickstartUser(HttpUser):
         for item_id in range(10):
             self.client.get(f"/nodejs/write/?num={item_id}", name="/nodejs/write")
             self.client.post("/nodejs/sha256", json={"num1":"{item_id}", "num2":"{item_id}"})
-            self.client.post("/nodejs/sha256", json={"num1":"{item_id}", "num2":"{item_id}"}) 
+            self.client.post("/go/sha256", json={"num1":"{item_id}", "num2":"{item_id}"}) 
             self.client.get("/go/write/?num={item_id}")
             time.sleep(1)
 
