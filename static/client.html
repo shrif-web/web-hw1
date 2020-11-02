@@ -1,0 +1,242 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>The HTML5 Herald</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
+
+    <script>
+
+      function onFetch_js() {
+        var num1 = document.getElementById("firstnum").value;
+        var num2 = document.getElementById("secondnum").value;
+        var obj;
+        fetch("http://localhost:8080/nodejs/sha256", {
+
+          // Adding method type
+          method: "POST",
+
+          // Adding body or contents to send
+          body: JSON.stringify({
+            num1, num2
+          }),
+
+          // Adding headers to the request
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+
+          // Converting to JSON
+          .then(response => response.json())
+
+          // Displaying results to console
+          .then(json => {
+            console.log(json)
+
+            err_m = 'type of inputs must be Number!'
+            if (!err_m.localeCompare(json.res)) 
+            {
+              error_sum();
+            } 
+            else {
+              document.getElementById("show_sum").innerHTML = json.res
+            }
+
+          });
+      }
+
+      function onFetch_go() {
+        let Num1 = document.getElementById("firstnum").value;
+        let Num2 = document.getElementById("secondnum").value;
+
+        fetch("http://localhost:3000/go/sha256", {
+
+          // Adding method type
+          method: "POST",
+
+          // Adding body or contents to send
+          body: JSON.stringify({
+            Num1,
+            Num2
+          }),
+
+          // Adding headers to the request
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+
+          // Converting to JSON
+          .then(response => response.json())
+
+          .then(json => {
+            console.log(json.SHA)
+            err_m = 'Incorrect input type!'
+            if (!err_m.localeCompare(json.Error)) 
+            {
+              error_sum();
+            } 
+            else {
+
+            document.getElementById("show_sum").innerHTML = json.SHA
+            }
+
+          });
+
+      }
+
+      function write_js() {
+        var num_line = document.getElementById("num_line").value;
+        let url = "http://localhost:8080/nodejs/write/?num=" + num_line;
+        fetch(url)
+          .then(response =>
+            response.text())
+          .then(data => {
+            console.log(data)
+            err_m = 'Line number must be in range 1 to 100'
+            if (!err_m.localeCompare(data)) {
+              error_read();
+            } else {
+              document.getElementById("show_line").innerHTML = data
+            }
+
+          });
+      }
+
+      function write_go() {
+
+        var Line_str_number = document.getElementById("num_line").value;
+        fetch("http://localhost:3000/go/write", {
+
+                      method: "POST",
+                      body: JSON.stringify({
+                        Line_str_number
+                      }),
+
+                      // Adding headers to the request
+                      headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                      }
+                      })
+
+                      // Converting to JSON
+                      .then(response => response.json())
+
+                      .then(json => {
+                        console.log(json.Error)
+                        err_m = 'Incorrect input type or line number out of range!'
+                        if (!err_m.localeCompare(json.Error)) {
+                                  error_read();
+                         }else{
+
+                        document.getElementById("show_line").innerHTML = json.Line
+                            }
+                      });
+
+      }
+
+      function error_read() {
+        document.getElementById("show_line").innerHTML = " ";
+
+        var error_node = document.getElementById("error_read");
+
+        error_node.innerHTML = "<div class='ui negative message' style='margin:13px;'>" +
+          "<div class='header'>" +
+          "Please enter a number less than 100</div></div>"
+        setTimeout(function () {
+          document.getElementById("error_read").innerHTML = "";
+        }, 5000);
+      }
+
+      function error_sum() {
+        document.getElementById("show_sum").innerHTML = " ";
+
+        var error_node = document.getElementById("error_sum");
+
+        error_node.innerHTML = "<div class='ui negative message' style='margin:13px;'>" +
+
+          "<div class='header'>" +
+          "Please enter a valid number </div></div>"
+        setTimeout(function () {
+          document.getElementById("error_sum").innerHTML = "";
+        }, 5000);
+      }
+
+    </script>
+
+</head>
+
+<body style="background-color: beige;">
+
+<div class="ui center aligned segment" style="margin-top: 40px; margin-left: 298px; margin-right: 300px;">
+    <h2 class="ui violet segment"> Sum Calculation</h2>
+    <div class="ui clearing divider"></div>
+    <p>
+
+    <div class="ui large form">
+        <div class="two fields">
+            <div class="field">
+                <label>First Number</label>
+                <input id="firstnum" placeholder="First Number" type="text">
+            </div>
+            <div class="field">
+                <label>Second Number</label>
+                <input id="secondnum" placeholder="Second Number" type="text">
+            </div>
+        </div>
+        <div class="ui buttons">
+            <button onclick="onFetch_go()" class="ui button">Go</button>
+            <div class="or"></div>
+            <button onclick="onFetch_js()" class="ui button">JS</button>
+
+        </div>
+    </div>
+    <div><span id="error_sum"></span>
+    </div>
+    <div class="ui secondary segment">
+        <p id="show_sum"></p>
+
+    </div>
+    </p>
+</div>
+
+<div class="ui center aligned segment" style="margin-top: 40px; margin-left: 298px; margin-right: 300px;">
+    <h2 class="ui teal segment"> Fetch from file</h2>
+    <div class="ui clearing divider"></div>
+    <p>
+
+    <div class="ui large form">
+        <div class="field">
+            <label>Enter Number</label>
+            <input style=" width: 100px;" id="num_line" placeholder="enter..." type="number">
+        </div>
+
+        <div class="ui buttons">
+            <button onclick="write_go()" class="ui button">Go</button>
+            <div class="or"></div>
+            <button onclick="write_js()" class="ui button">JS</button>
+
+        </div>
+    </div>
+    <div><span id="error_read"></span>
+
+        <div class="ui secondary segment" style="height: 40px; ">
+            <p id="show_line"></p>
+        </div>
+        </p>
+    </div>
+
+</body>
+</html>
