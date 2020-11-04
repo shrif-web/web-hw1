@@ -269,7 +269,7 @@ func writeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, err := os.Open("sample.txt")
+	file, err := os.Open("/Users/atena/Desktop/web-hw1/node/text.txt")
 
 	if err != nil {
 		log.Fatalf("failed to open")
@@ -298,8 +298,8 @@ func writeHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	fileServer := http.FileServer(http.Dir("./static"))
-	http.Handle("/", fileServer)
+	// fileServer := http.FileServer(http.Dir("./static"))
+	// http.Handle("/", fileServer)
 	http.HandleFunc("/go/sha256", shaHandler)
 	http.HandleFunc("/go/write", writeHandler)
 

@@ -4,7 +4,7 @@ const cors = require("cors");
 var bodyParser = require('body-parser');
 var crypto = require('crypto');
 var fs = require("fs");
-const port = 3000;
+const port = 8080;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -15,7 +15,7 @@ app.use(cors());
 app.get("/nodejs/write", (req, res) => { 
   var line_num = req.param('num');
   line_num = +line_num-1
-  var data = fs.readFileSync('./text.txt', 'utf8');
+  var data = fs.readFileSync('/Users/atena/Desktop/web-hw1/node/text.txt', 'utf8');
     var lines = data.split("\n");
  
     if(line_num > 99 || line_num < 0){

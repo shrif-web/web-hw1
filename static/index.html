@@ -22,7 +22,7 @@
         var num1 = document.getElementById("firstnum").value;
         var num2 = document.getElementById("secondnum").value;
         var obj;
-        fetch("http://localhost:8080/nodejs/sha256", {
+        fetch("/nodejs/sha256", {
 
           // Adding method type
           method: "POST",
@@ -61,7 +61,7 @@
         let Num1 = document.getElementById("firstnum").value;
         let Num2 = document.getElementById("secondnum").value;
 
-        fetch("http://localhost:3000/go/sha256", {
+        fetch("/go/sha256", {
 
           // Adding method type
           method: "POST",
@@ -99,7 +99,7 @@
 
       function write_js() {
         var num_line = document.getElementById("num_line").value;
-        let url = "http://localhost:8080/nodejs/write/?num=" + num_line;
+        let url = "/nodejs/write/?num=" + num_line;
         fetch(url)
           .then(response =>
             response.text())
@@ -118,7 +118,7 @@
       function write_go() {
 
         var Line_str_number = document.getElementById("num_line").value;
-        fetch("http://localhost:3000/go/write", {
+        fetch("/go/write", {
 
                       method: "POST",
                       body: JSON.stringify({
